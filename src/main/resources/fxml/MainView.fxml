@@ -201,9 +201,9 @@
                   <Button fx:id="BtnNewCrud" layoutX="103.0" layoutY="544.0" mnemonicParsing="false" onAction="#GoNewProduct" text="Nuevo" />
                </children>
             </Pane>
-            <Pane fx:id="PaneClients" layoutY="7.0" prefHeight="842.0" prefWidth="833.0" styleClass="pane_content" visible="false">
+            <Pane fx:id="PaneClients" layoutY="119.0" prefHeight="724.0" prefWidth="833.0" styleClass="pane_content" visible="false">
                <children>
-                  <TableView fx:id="clientTable" layoutX="15.0" layoutY="54.0" prefHeight="683.0" prefWidth="808.0">
+                  <TableView fx:id="clientTable" layoutX="50.0" layoutY="82.0" prefHeight="444.0" prefWidth="739.0">
                      <columns>
                         <TableColumn fx:id="nombreColumn" prefWidth="153.0" text="Nombre" />
                         <TableColumn fx:id="recetaColumn" prefWidth="222.0" text="Receta" />
@@ -215,12 +215,12 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <Label contentDisplay="CENTER" layoutX="325.0" layoutY="14.0" text="Gestionar Cliente" textAlignment="CENTER">
+                  <Label contentDisplay="CENTER" layoutX="329.0" layoutY="34.0" text="Gestionar Cliente" textAlignment="CENTER">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Button fx:id="BtnNewCrud1" layoutX="51.0" layoutY="767.0" mnemonicParsing="false" onAction="#GoNewClient" text="Nuevo" />
+                  <Button fx:id="BtnNewCrud1" layoutX="53.0" layoutY="543.0" mnemonicParsing="false" onAction="#GoNewClient" text="Nuevo" />
                </children>
             </Pane>
             <Pane fx:id="PaneSales" layoutX="2.0" layoutY="114.0" prefHeight="729.0" prefWidth="833.0" styleClass="pane_content" visible="false">

@@ -16,11 +16,13 @@ import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -50,7 +52,7 @@ public class NewClientFormController implements Initializable {
     private TextField enfermedadesClientes;
 
     @FXML
-    private TextField fechaNacimientoClientes;
+        private DatePicker fechaNacimientoClientes;
 
     @FXML
     private TextField nombreCliente;
@@ -186,8 +188,8 @@ void PostClientServer(ActionEvent event) {
         valueMedicinas = productMap.get(medicinasBox.getValue());
     }
 
-    String valueFechaNacimiento = fechaNacimientoClientes.getText();
-    if (valueFechaNacimiento.isEmpty()) {
+    LocalDate valueFechaNacimiento = fechaNacimientoClientes.getValue();
+    if (valueFechaNacimiento==null) {
         errorMessages.append("La fecha de nacimiento no puede estar vacía.\n");
     }
 
