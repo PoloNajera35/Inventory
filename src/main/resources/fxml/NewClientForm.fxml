@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -42,7 +43,6 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <TextField fx:id="fechaNacimientoClientes" alignment="CENTER" layoutX="272.0" layoutY="201.0" prefWidth="152.0" promptText="dd/mm/aaaa" />
       <Text layoutX="518.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo electrónico" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
@@ -63,5 +63,6 @@
       <Button fx:id="clientes_Post" layoutX="318.0" layoutY="351.0" mnemonicParsing="false" onAction="#PostClientServer" style="-fx-background-color: #14bb49;" text="Guardar" textAlignment="CENTER" />
       <TextField fx:id="emailCliente" alignment="CENTER" layoutX="503.0" layoutY="201.0" prefWidth="152.0" promptText="ejemplo@ejemplo.com" />
       <ComboBox fx:id="medicinasBox" layoutX="33.0" layoutY="201.0" prefWidth="150.0" />
+      <DatePicker fx:id="fechaNacimientoClientes" layoutX="261.0" layoutY="201.0" />
    </children>
 </AnchorPane>
