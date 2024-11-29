@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import upa.inventario.Client;
 
 public class MainViewController {
     @FXML
@@ -46,6 +47,8 @@ public class MainViewController {
 
     @FXML
     private Button BtnNewCrud12;
+        @FXML
+    private Button refrescar_btn;
 
     @FXML
     private Pane PaneClients;
@@ -204,55 +207,59 @@ public void initialize() {
     newStage.show();
    
     }
-    public class Client {
-    private String name;
-    private String address;
-    private String subscription;
-    private Integer phone;
+   
 
-    // Constructor
-    public Client(String name, String address, String subscription, Integer phone) {
-        this.name = name;
-        this.address = address;
-        this.subscription = subscription;
-        this.phone = phone;
+   @FXML
+   void refreshTable(ActionEvent event){
+   HttpURLConnection connection = null;
+    try {
+        URL url = new URL("http://127.0.0.1:8000/clients/Client/");
+        connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json; utf-8");
+        connection.setRequestProperty("Accept", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        System.out.println("Response Code: " + responseCode);
+
+        InputStream inputStream = (responseCode >= 200 && responseCode < 300) 
+                                    ? connection.getInputStream() 
+                                    : connection.getErrorStream();
+
+        StringBuilder response = new StringBuilder();
+        try (BufferedReader rd = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = rd.readLine()) != null) {
+                response.append(line);
+            }
+        }
+
+        // Parse JSON response
+        String jsonResponse = response.toString();
+        JSONArray jsonArray = new JSONArray(jsonResponse);
+        ObservableList<Client> clients = FXCollections.observableArrayList();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject obj = jsonArray.getJSONObject(i);
+            String name = obj.getString("name");
+            String address = obj.getString("address");
+            String subscription = obj.getString("suscription");
+            Integer phone = obj.getInt("phone");
+
+            clients.add(new Client(name, address, phone, subscription));
+        }
+
+        // Populate the TableView
+        clientTable.setItems(clients);
+
+    } catch (IOException | JSONException e) {
+        e.printStackTrace();
+    } finally {
+        if (connection != null) {
+            connection.disconnect();
+        }
     }
-
-    // Getters and setters
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getSubscription() {
-        return subscription;
-    }
-
-    public void setSubscription(String subscription) {
-        this.subscription = subscription;
-    }
-
-    public int getPhone() {
-        return phone;
-    }
-
-    public void setPhone(Integer phone) {
-        this.phone = phone;
-    }
-}
-
-    
+   }
     
       @FXML
 void GoClients(ActionEvent event) {
@@ -305,7 +312,7 @@ void GoClients(ActionEvent event) {
             String subscription = obj.getString("suscription");
             Integer phone = obj.getInt("phone");
 
-            clients.add(new Client(name, address, subscription, phone));
+            clients.add(new Client(name, address, phone, subscription));
         }
 
         // Populate the TableView

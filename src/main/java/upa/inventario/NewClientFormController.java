@@ -23,11 +23,15 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class NewClientFormController implements Initializable {
+
     @FXML
     private Button clientes_Post;
     @FXML
@@ -46,6 +50,18 @@ public class NewClientFormController implements Initializable {
     private TextField telefonoCliente;
     @FXML
     private ComboBox<String> medicinasBox;
+    @FXML
+    private TableView<Client> clientTable;
+    @FXML
+    private TableColumn<Client, String> direccionColumn;
+    @FXML
+    private TableColumn<Client, String> nombreColumn;
+    @FXML
+    private TableColumn<Client, String> recetaColumn;
+    @FXML
+    private TableColumn<Client, Integer> telefonoColumn;
+    @FXML
+    private TableColumn<Client, Void> verColumn;
 
     private Map<String, Integer> productMap = new HashMap<>();
 
@@ -56,6 +72,11 @@ public class NewClientFormController implements Initializable {
             String selectedProductName = medicinasBox.getValue();
             Integer selectedProductId = productMap.get(selectedProductName);
             System.out.println("Selected Product ID: " + selectedProductId);
+                // Bind columns to Client properties
+    nombreColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+    direccionColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+    recetaColumn.setCellValueFactory(new PropertyValueFactory<>("subscription"));
+    telefonoColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         });
     }
 
@@ -72,8 +93,8 @@ public class NewClientFormController implements Initializable {
             System.out.println("Response Code: " + responseCode);
 
             InputStream inputStream = (responseCode >= 200 && responseCode < 300)
-                                        ? connection.getInputStream()
-                                        : connection.getErrorStream();
+                    ? connection.getInputStream()
+                    : connection.getErrorStream();
 
             StringBuilder response = new StringBuilder();
             try (BufferedReader rd = new BufferedReader(new InputStreamReader(inputStream))) {
@@ -231,4 +252,6 @@ public class NewClientFormController implements Initializable {
             currentStage.close();
         }
     }
+
+   
 }
