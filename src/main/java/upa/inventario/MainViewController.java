@@ -199,6 +199,7 @@ public void initialize() {
     
     Stage newStage = new Stage();
     Scene scene = new Scene(root);
+    newStage.setTitle("Nuevo Producto");
     newStage.setScene(scene);
     newStage.show();
    
@@ -327,6 +328,7 @@ void GoClients(ActionEvent event) {
     
     Stage newStage = new Stage();
     Scene scene = new Scene(root);
+    newStage.setTitle("Nuevo Cliente");
     newStage.setScene(scene);
     newStage.show();
     }
@@ -371,6 +373,7 @@ void GoClients(ActionEvent event) {
     
     Stage newStage = new Stage();
     Scene scene = new Scene(root);
+    newStage.setTitle("Corte del Dia");
     newStage.setScene(scene);
     newStage.show();
     }
@@ -398,6 +401,7 @@ void GoClients(ActionEvent event) {
     
     Stage newStage = new Stage();
     Scene scene = new Scene(root);
+    newStage.setTitle("Nuevo Provedor");
     newStage.setScene(scene);
     newStage.show();
     }

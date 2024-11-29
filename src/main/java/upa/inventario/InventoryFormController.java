@@ -16,6 +16,11 @@ import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
+import java.time.LocalDate;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
@@ -24,8 +29,51 @@ import javafx.stage.Stage;
  * @author carlo
  */
 public class InventoryFormController implements Initializable {
- @FXML
-  private Button btnPost;
+ 
+      @FXML
+    private Button btnPost;
+
+    @FXML
+    private TextField categoriaProducto;
+
+    @FXML
+    private TextField codigoBarraProducto;
+
+    @FXML
+    private TextField descripcionProducto;
+
+    @FXML
+    private TextField descuentoProducto;
+
+    @FXML
+    private TextField exiActual;
+
+    @FXML
+    private TextField exiMinima;
+
+    @FXML
+    private TextField expiracionProducto;
+
+    @FXML
+    private TextField fechaRe;
+
+    @FXML
+    private DatePicker fechaRestablecimiento;
+
+    @FXML
+    private TextField marcaProducto;
+
+    @FXML
+    private TextField nombreProductoPro;
+
+    @FXML
+    private TextField provedorProducto;
+
+    @FXML
+    private TextField ubicacioProducto;
+    
+    @FXML
+    private DatePicker fechaExpiracion;
 
     /**
      * Initializes the controller class.
@@ -37,16 +85,73 @@ public class InventoryFormController implements Initializable {
     }  
  @FXML
 void PostServer(ActionEvent event) {
-    String valueNombre = "Pepto Bismol";
+    
+    
+    String valueNombre = nombreProductoPro.getText();
     String valueBarCode = "123456789";  // Example value; replace with actual input
-    String valueBrand = "ExampleBrand";  // Example value; replace with actual input
-    String valueExpirationDate = "2025-12-31";  // Example value; replace with actual input
-    String valueDescription = "Sample product description";  // Example value; replace with actual input
-    int valueMinStock = 10;  // Example value; replace with actual input
-    int valueStock = 50;  // Example value; replace with actual input
-    String valueProvider = "ProviderName";  // Example value; replace with actual input
-    String valueLocation = "Aisle 3";  // Example value; replace with actual input
+    String valueBrand = marcaProducto.getText();;  // Example value; replace with actual input
+    LocalDate valueExpirationDate = fechaExpiracion.getValue();//Example value; replace with actual input
+    String valueDescription = descripcionProducto.getText();  // Example value; replace with actual input
+    String valueMinStockText = exiMinima.getText();  // Example value; replace with actual input
+    String valueStockText = exiActual.getText();  // Example value; replace with actual input
+    String valueProvider = provedorProducto.getText();  // Example value; replace with actual input
+    String valueLocation = ubicacioProducto.getText();  // Example value; replace with actual input
+    String valueDiscountText = descuentoProducto.getText();
+    String category = categoriaProducto.getText();
+    LocalDate dateResupply = fechaRestablecimiento.getValue();
+    
+    
+    if (valueNombre.isEmpty() || valueBrand.isEmpty() || valueDescription.isEmpty() || 
+        valueMinStockText.isEmpty() || valueStockText.isEmpty() || valueProvider.isEmpty() || 
+        valueLocation.isEmpty() || valueDiscountText.isEmpty() || category.isEmpty() || 
+        valueExpirationDate == null || dateResupply == null) {
+        
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setContentText("Entrada inválida");
+        alert.setContentText("Todos los campos deben estar llenos.");
+    
+        // Mostrar la alerta
+        alert.showAndWait();
+        
+        return;
+    }
 
+    int valueMinStock, valueStock, discount;
+    try {
+        valueMinStock = Integer.parseInt(valueMinStockText);
+        valueStock = Integer.parseInt(valueStockText);
+        discount = Integer.parseInt(valueDiscountText);
+    } catch (NumberFormatException e) {
+         Alert alert = new Alert(AlertType.ERROR);
+         alert.setTitle("Error");
+         alert.setContentText("Entrada inválida");
+         alert.setContentText("Los campos de existencias y descuento deben ser números.");
+    
+    // Mostrar la alerta
+    alert.showAndWait();
+        return;
+    }
+
+    // Validar longitud y formato de fechas (ya están controladas por DatePicker)
+    if (valueExpirationDate.isAfter(dateResupply)) {
+         Alert alert = new Alert(AlertType.ERROR);
+         alert.setTitle("Error");
+         alert.setContentText("Entrada inválida");
+         alert.setContentText("La fecha de expiración no puede ser posterior a la fecha de reabastecimiento.");
+    
+    // Mostrar la alerta
+    alert.showAndWait();
+        return;
+    }
+    
+   System.out.println(String.format("Nombre: %s, Codigo de barras: %s, Marca de producto: %s, Fecha Expiracion: %s, Descripcion: %s, MinStock: %s, Stock: %s, Provedor: %s, Ubicacion: %s,  Descuento: %s,  Categoria: %s,  FechaRest: %s",
+        valueNombre, valueBarCode, valueBrand, valueExpirationDate, valueDescription, valueMinStock, valueStock, valueProvider,valueLocation,discount,category,dateResupply));
+   
+        Stage stage = (Stage) btnPost.getScene().getWindow();
+        stage.close();
+    
+    
     HttpURLConnection connection = null;
     try {
         // Create connection
@@ -60,8 +165,8 @@ void PostServer(ActionEvent event) {
 
         // Prepare JSON data
         String jsonInputString = String.format(
-            "{\"bar_code\": \"%s\", \"name\": \"%s\", \"brand\": \"%s\", \"expiration_date\": \"%s\", \"description\": \"%s\", \"min_stock\": %d, \"stock\": %d, \"provider\": \"%s\", \"location\": \"%s\"}",
-            valueBarCode, valueNombre, valueBrand, valueExpirationDate, valueDescription, valueMinStock, valueStock, valueProvider, valueLocation
+            "{\"bar_code\": \"%s\", \"name\": \"%s\", \"brand\": \"%s\", \"expiration_date\": \"%s\", \"description\": \"%s\", \"min_stock\": %d, \"stock\": %d, \"provider\": \"%s\", \"location\": \"%s\", \"discount\": \"%d\", \"category\": \"%s\", \"dateResupply\": \"%s\"}",
+            valueBarCode, valueNombre, valueBrand, valueExpirationDate, valueDescription, valueMinStock, valueStock, valueProvider, valueLocation, discount, category, dateResupply
         );
 
         // Send request
@@ -89,6 +194,7 @@ void PostServer(ActionEvent event) {
                 response.append('\r');
             }
             System.out.println("Response: " + response.toString());
+            
         }
     } catch (IOException e) {
     } finally {
@@ -96,11 +202,6 @@ void PostServer(ActionEvent event) {
             connection.disconnect();
         }
     }
-      
-    Stage currentStage = (Stage) btnPost.getScene().getWindow();
-    currentStage.close();
-    
 }
-  
-    
+
 }

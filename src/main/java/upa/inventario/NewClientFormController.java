@@ -29,10 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-
-
-
-
 /**
  * FXML Controller class
  *
@@ -68,14 +64,6 @@ public class NewClientFormController implements Initializable {
       @FXML
     private ComboBox<String> medicinasBox;
   
-      
-      
-      
-      
-      
-      
-      
-      
       
     /**
      * Initializes the controller class.
